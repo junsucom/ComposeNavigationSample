@@ -19,6 +19,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
 import com.junsu.navigationsample.ui.home.HomeScreen
 import com.junsu.navigationsample.ui.profile.ProfileDetailScreen
 import com.junsu.navigationsample.ui.profile.ProfileScreen
@@ -26,6 +27,23 @@ import com.junsu.navigationsample.ui.search.SearchScreen
 
 @Composable
 fun MainScreen() {
+    val rootNavController = rememberNavController()
+
+    NavHost(navController = rootNavController, startDestination = "main") {
+        composable("main") {
+            MainTabContent()
+        }
+        composable(
+            "fullscreen",
+            deepLinks = listOf(navDeepLink { uriPattern = "junsu://fullscreen" })
+        ) {
+            FullScreen()
+        }
+    }
+}
+
+@Composable
+fun MainTabContent() {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
